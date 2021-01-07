@@ -1,0 +1,525 @@
+// Put your styles in this file.
+
+$headline-font: 'Georgia', 'Times New Roman', Times, serif;
+$text-font: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+
+$black: #000000;
+$white: #FFFFFF;
+
+$light-black: #333333;
+
+$text-color: #555555;
+$text-color-white: #CCCCCC;
+$text-color-light: #707070;
+$text-color-light-white: #AAAAAA;
+
+$gold: #BEA482;
+
+$background-color: #F7F2EA;
+$header-background-color: #EEE6DD;
+$footer-background-color: #F4EDE6;
+$border-color: rgba(0,0,0,0.15);
+$border-color-white: rgba(255,255,255,0.15);
+
+$standard-border: 1px solid $border-color;
+$standard-border-white: 1px solid $border-color-white;
+
+$line-global: 20px;
+$gutter-global: $line-global;
+$offset-global: $line-global*2; // 40px;
+
+$header-height: $line-global*4; // 80px;
+
+$type-headline-lg: 50px;
+$type-headline-med: 30px;
+$type-body-med: 15px;
+$type-body-sm: 13px;
+
+$type-bold: 700;
+$type-book: 400;
+
+//mixins
+@mixin reset-input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+    text-align: left;
+}
+
+@mixin flex-space-between {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin spaced-caps {
+    font-size: $type-body-med;
+    font-weight: $type-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.075em;
+}
+
+//base
+
+* {
+    font-family: $text-font;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: $black;
+    line-height: $line-global;
+}
+
+body {
+    font-size: $type-body-med;
+    background-color: $background-color;
+    background-image: url('{{ "background.jpg" | asset_url }}');
+    background-size: 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    padding-top: $header-height + $offset-global;
+}
+
+h1,h2,h3,h4,h5,h6,p,ul,ol {
+    margin: 0;
+    padding: 0;
+    font-weight: $type-book;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul,
+ol {
+    list-style-type: none;
+}
+
+//style guide
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3 {
+    font-family: $headline-font;
+    font-weight: $type-bold;
+    color: $light-black;
+}
+
+h1,
+.h1 {
+    font-size: $type-headline-lg;
+    line-height: $line-global * 3;
+}
+
+h2,
+.h2 {
+    font-size: $type-headline-med;
+    line-height: $line-global * 2;
+}
+
+h3,
+.h3 {
+    font-size: $type-body-med;
+    line-height: $line-global;
+}
+
+h4,
+.h4  {
+    color: $light-black;
+    @include spaced-caps;
+
+}
+
+a {
+    color: $text-color;
+    &:hover {
+        opacity: 0.75;
+    }
+}
+
+p {
+    color: $text-color;
+    a {
+        border-bottom: $standard-border;
+        &:hover {
+            border-bottom-color: $black;
+        }
+    }
+}
+
+.text-link {
+    @include spaced-caps;
+    color: $black;
+}
+
+button[type="submit"],
+.button {
+    @include reset-input;
+    display: inline-block;
+    width: 100%;
+    padding: $line-global;
+    text-align: center;
+    font-size: $type-body-med;
+    line-height: $line-global;
+    background: $gold;
+    color: $white;
+
+    &:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+        text-decoration: line-through;
+    }
+
+    &:not(:disabled):hover {
+        background: darken($gold, 10%);
+    }
+}
+
+//utility classes
+.visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px 1px 1px 1px 1px);
+}
+
+.wrapper {
+    padding-left: $offset-global;
+    padding-right: $offset-global;
+}
+
+.grid {
+    display: grid;
+    column-gap: $gutter-global;
+    row-gap: $gutter-global;
+
+    > * {
+        min-width: 0;
+        min-height: 0;
+    }
+
+    &.collapse {
+        column-gap: 0;
+        row-gap: 0;
+    }
+}
+
+.two-columns {
+    grid-template-columns: 1fr 1fr;
+}
+
+.valign-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ta-center {
+    text-align: center;
+}
+
+.text-white {
+    color: $white;
+
+    h1,.h1,h2,.h2,h3,.h3,h4,.h4 {
+        color: $white;
+    }
+
+    p,
+    .accent-color {
+        color: $text-color-white;
+    }
+
+    a {
+        color: white;
+    }
+}
+
+//header
+
+.header-global {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $header-height;
+    background-color: $header-background-color;
+    padding: $line-global $offset-global;
+    @include flex-space-between;
+    
+    .shop-link {
+        order: -1;
+    }
+
+    .cart-close-text {
+        display: none;
+    }
+}
+
+
+//footer
+.footer-global {
+    background-color: $footer-background-color;
+    margin-top: $offset-global;
+    border-top: $standard-border;
+
+    h4 {
+        margin-bottom: $line-global;
+
+    }
+}
+
+.footer-top,
+.footer-bottom {
+    padding: $offset-global;
+}
+
+.footer-top {
+    grid-template-columns: 2fr 1fr 1fr;
+}
+
+.footer-bottom {
+    border-top: $standard-border;
+    @include flex-space-between;
+}
+
+.social-links {
+    a {
+        display: inline-block;
+        &:not(:last-child) {
+            margin-right: $line-global/2;
+        }
+    }
+}
+
+
+//index page
+.index-top {
+    height: 50vh;
+    min-height: 400px;
+    padding-bottom: $offset-global;
+}
+
+// shared prosuct styles
+.product-info-section {
+    @extend .text-white;
+    background: $light-black;
+    padding: $offset-global;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    
+    .product-title {
+        padding: $line-global 0;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+    
+    .price {
+        display: inline-block;
+        font-size: $line-global;
+        color: $text-color-white;
+        font-weight: $type-book;
+        vertical-align: super;
+    }
+
+    .below-title {
+        max-width: 396px;
+        margin: 0 auto;
+    }
+
+    .product-description {
+        margin-bottom: $line-global;
+    }
+}
+
+//product card
+.product-card {
+    .card-image {
+        a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    &:nth-child(odd) {
+        .card-image {
+            grid-column: 0;
+            grid-row: 1;
+        }
+    }
+}
+
+// product page
+.product-image {
+    width: 100%;
+
+    img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+// add to cart form
+#add-to-cart-form {
+
+}
+
+.option-row {
+    text-align: left;
+    padding: $line-global 0;
+    border-top: $standard-border-white;
+    @include flex-space-between;
+
+    &:last-of-type {
+        border-bottom: $standard-border-white;
+    }
+
+}
+
+.option-title {
+    color: $text-color-white;
+}
+
+.variant-radio {
+    @extend .visually-hidden;
+
+    & + label {
+        @include spaced-caps;
+        display: inline-block;
+        cursor: pointer;
+        padding: $line-global/5;
+        border: 1px solid transparent;
+        color: $text-color-light-white;
+    }
+
+    &:checked + label {
+        color: $white;
+        border: 1px solid $white;
+    }
+
+    &:disabled + label {
+        cursor: not-allowed;
+        text-decoration: line-through;
+        color: $text-color;
+    }
+}
+
+.quantity-button {
+    @include reset-input;
+    font-size: $line-global;
+    line-height: $line-global;
+    text-align: center;
+    font-weight: $type-bold;
+    color: $text-color-white;
+    width: $line-global;
+
+    &:disabled {
+        opacity: 0.5;
+    }
+
+    &:not(:disabled):hover {
+        color: $white;
+    }
+}
+
+.quantity-text {
+    display: inline-block;
+    text-align: center;
+    min-width: $line-global;
+    margin: 0 $line-global/2;
+}
+
+#add-to-cart-button {
+    margin-top: $line-global;
+}
+
+// cart page styles
+.cart-page-contents {
+    background: $light-black;
+    padding: $offset-global;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+// shared cart styles
+.cart-lines {
+    margin-top: $line-global;
+    border-top: $standard-border-white;
+    border-bottom: $standard-border-white;
+    padding: $line-global 0;
+}
+
+.cart-empty-text {
+    margin: ($line-global*4) 0;
+}
+
+// line item styles
+.line-item {
+    @extend .text-white;
+
+    @include flex-space-between;
+
+    .line-image {
+        width: 80px;
+        position: relative;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .remove-line {
+        position: absolute;
+        width: $line-global;
+        height: $line-global;
+        top: -($line-global/2);
+        right: -($line-global/2);
+        display: none;
+    }
+
+    &:hover {
+        .remove-line {
+            display: block;
+        }
+    }
+
+    &:not(:first-child) {
+        margin-top: $line-global;
+    }
+}
+
+.subtotal-line {
+    @include flex-space-between;
+    padding: $line-global 0;
+}
