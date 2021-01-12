@@ -73,12 +73,61 @@ $(document).ready(function() {
                 error: onError
             });
         },
+
+        onLineRemoved = function(event) {
+            event.preventDefault();
+
+            let 
+                $removeLink =$(this),
+                removeQuery = $removeLink.attr('href').split('change?')[1];
+            $.post('/cart/change.js', removeQuery, onCartUpdated, 'json');
+        },
+
         onCartUpdated = function() {
-            alert('cart is updated');
+            $.ajax({
+                type: 'GET',
+                url: '/cart',
+                context: document.body,
+                success: function(context) {
+                    let 
+                        $dataCartContents = $(context).find('.js-cart-page-contents'),
+                        dataCartHtml = $dataCartContents.html(),
+                        dataCartItemCount = $dataCartContents.attr('data-cart-item-count'),
+                        $miniCartContents = $('.js-mini-cart-contents'),
+                        $cartItemCount = $('.js-cart-item-count');
+                    
+                    $cartItemCount.text(dataCartItemCount);
+                    $miniCartContents.html(dataCartHtml);
+
+                    if (parseInt(dataCartItemCount) > 0) {
+                        openCart();
+                    } else {
+                        closeCart();
+                    }
+                }
+            })
         },
         onError = function(XMLHttpRequest, textStatus) {
             let data = XMLHttpRequest.responseJSON;
             alert(data.status + ' - ' + data.message + ': ' + dta.description);
+        },
+        openCart = function() {
+            $('html').addClass('mini-cart-open');
+        },
+        closeCart = function() {
+            $('html').removeClass('mini-cart-open');
+        },
+        onCartButtonClick = function(event) {
+            event.preventDefault();
+
+            let isCartOpen = $('html').hasClass('mini-cart-open');
+
+            if (!isCartOpen) {
+                openCart();
+            } else {
+                closeCart();
+            }
+
         }
 
 
@@ -90,4 +139,9 @@ $(document).ready(function() {
     $(document).on('change', '.js-variant-radio', onVariantRadioChange)
 
     $(document).on('submit', '#add-to-cart-form', onAddToCart)
+
+    $(document).on('click', '#mini-cart .js-remove-line', onLineRemoved)
+
+    $(document).on('click', '.js-cart-link, #mini-cart .js-keep-shopping', onCartButtonClick);
+
 })
